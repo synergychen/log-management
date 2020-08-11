@@ -1,0 +1,31 @@
+service: log-rotation
+custom:
+  secrets: ${file(secrets.json)}
+provider:
+  name: aws
+  runtime: python3.7
+  region: us-east-1
+  memorySize: 256 # Default 1024 MB
+  timeout: 60 # Default 6 seconds
+  environment:
+    OWNER: ${self:custom.secrets.OWNER}
+    S3_LOG_BUCKET: ${self:custom.secrets.S3_LOG_BUCKET}
+    RETENTION_DAYS: ${self:custom.secrets.RETENTION_DAYS}
+    CLOUDWATCH_LOGS: ${self:custom.secrets.CLOUDWATCH_LOGS}
+  iamManagedPolicies:
+    - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+    - "arn:aws:iam::aws:policy/AWSLambdaExecute"
+    - "arn:aws:iam::aws:policy/CloudWatchEventsFullAccess"
+    - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:ListBucket"
+        # Check if bucket exists and if have permission to access
+        - "s3:HeadBucket"
+      Resource:
+        - "*"
+functions:
+  perform:
+    handler: handler.lambda_handler
+    name: ${self:service}-perform
