@@ -6,7 +6,7 @@ provider:
   runtime: python3.7
   region: us-east-1
   memorySize: 256 # Default 1024 MB
-  timeout: 60 # Default 6 seconds
+  timeout: 120 # Default 6 seconds
   environment:
     OWNER: ${self:custom.secrets.OWNER}
     S3_LOG_BUCKET: ${self:custom.secrets.S3_LOG_BUCKET}

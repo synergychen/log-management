@@ -247,7 +247,7 @@ async def export_cw_logs_to_s3(global_vars, log_group_name, retention_days, buck
         d_prefix = str( log_group_name.replace("/","-")[1:] ) + "/" + str( gen_ymd(n1_day, '') )
     else:
         d_prefix = str( log_group_name.replace("/","-") ) + "/" + str( gen_ymd(n1_day, '') )
-    # d_prefix = str( log_group_name.replace("/","-")[1:] )
+    d_prefix = "cloudwatch-logs/" + d_prefix
     # Check if S3 Bucket Exists
     resp = does_bucket_exists(bucket_name)
     if not resp.get('status'):
