@@ -1,4 +1,4 @@
-service: log-rotation
+service: log-management
 custom:
   secrets: ${file(secrets.json)}
 provider:
@@ -25,6 +25,6 @@ provider:
       Resource:
         - "*"
 functions:
-  perform:
-    handler: handler.handler
-    name: ${self:service}-perform
+  logRotation:
+    handler: handler.log_rotation
+    name: ${self:service}-logRotation

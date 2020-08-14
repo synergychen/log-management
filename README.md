@@ -1,10 +1,11 @@
-# Log Rotation
+# Log Management
 
-Filter, parse CloudWatch logs and upload to S3.
+Log management provides easy APIs to collect, filter, parse and save logs.
 
-## Why
+The service is based on Lambda, which inclues:
 
-CloudWatch logs are noisy sometimes and could be hard to query and aggregate across different systems. This lambda function provide a way to filter, parse CloudWatch logs (from different log groups) and upload results to S3 for further analysis.
+- A service to collect logs, similar to Splunk HEC (HTTP Event Collector).
+- A service to filter, parse CloudWatch logs and upload to S3.
 
 ## How to Use
 
@@ -39,7 +40,7 @@ serverless invoke local --function perform
 ### Create from scratch
 
 ```bash
-serverless create --template aws-python3 --path log-rotation
+serverless create --template aws-python3 --path log-management
 ```
 
 ### Delete service

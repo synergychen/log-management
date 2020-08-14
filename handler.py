@@ -64,7 +64,7 @@ def save_to_s3(bucket_name, prefix, data):
     s3.Object(bucket_name, prefix).put(Body=data)
     print('Saved successfully.')
 
-def handler(event, context):
+def log_rotation(event, context):
     # Settings
     retention_days = int(os.environ.get("RETENTION_DAYS"))
     bucket_name = os.environ.get("S3_LOG_BUCKET")
@@ -93,4 +93,4 @@ def handler(event, context):
         save_to_s3(bucket_name, prefix, data)
 
 if __name__ == '__main__':
-    handler()
+    log_rotation()
