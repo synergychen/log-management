@@ -8,7 +8,6 @@ provider:
   memorySize: 256 # Default 1024 MB
   timeout: 120 # Default 6 seconds
   environment:
-    OWNER: ${self:custom.secrets.OWNER}
     S3_LOG_BUCKET: ${self:custom.secrets.S3_LOG_BUCKET}
     RETENTION_DAYS: ${self:custom.secrets.RETENTION_DAYS}
     CLOUDWATCH_LOGS: ${self:custom.secrets.CLOUDWATCH_LOGS}
@@ -27,5 +26,5 @@ provider:
         - "*"
 functions:
   perform:
-    handler: handler.lambda_handler
+    handler: handler.handler
     name: ${self:service}-perform
