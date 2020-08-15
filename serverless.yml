@@ -10,6 +10,7 @@ provider:
   memorySize: 128 # Default 1024 MB
   timeout: 60 # Default 6 seconds
   environment:
+    AUTH_TOKEN: ${self:custom.secrets.AUTH_TOKEN}
     S3_LOG_BUCKET: ${self:custom.secrets.S3_LOG_BUCKET}
     RETENTION_DAYS: ${self:custom.secrets.RETENTION_DAYS}
     CLOUDWATCH_LOGS: ${self:custom.secrets.CLOUDWATCH_LOGS}
