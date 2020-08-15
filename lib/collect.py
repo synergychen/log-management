@@ -3,13 +3,15 @@ import json
 
 def collect(event, context):
     if not verify_token(event):
-        return {
+        response ={
             'statusCode': 401,
             'body': 'Invalid Token',
             'headers': {
                 'Content-Type': 'application/json'
             }
         }
+        print(response)
+        return response
 
     print(event['body'])
     return {
