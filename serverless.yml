@@ -35,6 +35,6 @@ functions:
     name: ${self:service}-collect
     events:
       - http:
-          path: log-management/collect
+          path: collect
           method: post
           cors: true
