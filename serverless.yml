@@ -5,8 +5,8 @@ provider:
   name: aws
   runtime: python3.7
   region: us-east-1
-  memorySize: 256 # Default 1024 MB
-  timeout: 120 # Default 6 seconds
+  memorySize: 128 # Default 1024 MB
+  timeout: 60 # Default 6 seconds
   environment:
     S3_LOG_BUCKET: ${self:custom.secrets.S3_LOG_BUCKET}
     RETENTION_DAYS: ${self:custom.secrets.RETENTION_DAYS}
@@ -28,3 +28,6 @@ functions:
   logRotation:
     handler: handler.log_rotation
     name: ${self:service}-logRotation
+  collect:
+    handler: handler.collect
+    name: ${self:service}-collect

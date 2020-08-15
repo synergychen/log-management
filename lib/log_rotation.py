@@ -5,6 +5,36 @@ import os
 import re
 import time
 
+def log_rotation(event, context):
+    # Settings
+    retention_days = int(os.environ.get("RETENTION_DAYS"))
+    bucket_name = os.environ.get("S3_LOG_BUCKET")
+    parent_folder = 'lambda-logs'
+    log_groups = os.environ.get("CLOUDWATCH_LOGS").split(",")
+
+    # Calculations
+    date_and_time = timestamps(retention_days)
+    start_time = date_and_time['start_time']
+    end_time = date_and_time['end_time']
+    end_year = date_and_time['end_year']
+    end_month = date_and_time['end_month']
+    end_date = date_and_time['end_date']
+
+    for log_group in log_groups:
+        print('Rotating logs for: ' + log_group + ' ...')
+        # Query log
+        results = query(log_group, start_time, end_time)
+
+        # Parse results
+        json_data = parse_results(results)
+
+        # Save to S3
+        prefix = parent_folder + '/' + \
+            log_group.split('/')[-1] + '/' + end_year + \
+            '/' + end_month + '/' + end_date + '.json'
+        data = json.dumps(json_data, ensure_ascii=False)
+        save_to_s3(bucket_name, prefix, data)
+
 def query(log_group, start_time, end_time):
     client = boto3.client('logs')
 
@@ -63,36 +93,6 @@ def save_to_s3(bucket_name, prefix, data):
     print('Saving to S3 ...')
     s3.Object(bucket_name, prefix).put(Body=data)
     print('Saved successfully.')
-
-def log_rotation(event, context):
-    # Settings
-    retention_days = int(os.environ.get("RETENTION_DAYS"))
-    bucket_name = os.environ.get("S3_LOG_BUCKET")
-    parent_folder = 'lambda-logs'
-    log_groups = os.environ.get("CLOUDWATCH_LOGS").split(",")
-
-    # Calculations
-    date_and_time = timestamps(retention_days)
-    start_time = date_and_time['start_time']
-    end_time = date_and_time['end_time']
-    end_year = date_and_time['end_year']
-    end_month = date_and_time['end_month']
-    end_date = date_and_time['end_date']
-
-    for log_group in log_groups:
-        print('Rotating logs for: ' + log_group + ' ...')
-        # Query log
-        results = query(log_group, start_time, end_time)
-
-        # Parse results
-        json_data = parse_results(results)
-
-        # Save to S3
-        prefix = parent_folder + '/' + \
-            log_group.split('/')[-1] + '/' + end_year + \
-            '/' + end_month + '/' + end_date + '.json'
-        data = json.dumps(json_data, ensure_ascii=False)
-        save_to_s3(bucket_name, prefix, data)
 
 if __name__ == '__main__':
     log_rotation()
