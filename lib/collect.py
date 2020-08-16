@@ -13,7 +13,7 @@ def collect(event, context):
         print(response)
         return response
 
-    print(event['body'])
+    print(json.loads(event['body']))
     return {
         'statusCode': 200,
         'body': 'OK',
