@@ -9,6 +9,8 @@ provider:
     cors: true
   memorySize: 128 # Default 1024 MB
   timeout: 60 # Default 6 seconds
+  deploymentBucket:
+    name: ${self:custom.secrets.S3_DEPLOYMENT_BUCKET}
   environment:
     AUTH_TOKEN: ${self:custom.secrets.AUTH_TOKEN}
     S3_LOG_BUCKET: ${self:custom.secrets.S3_LOG_BUCKET}
